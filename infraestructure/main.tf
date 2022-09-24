@@ -9,39 +9,18 @@ resource "random_integer" "ri" {
   max = 99999
 }
 
-resource "azurerm_cosmosdb_account" "db" {
-  name                = var.cosmosdb_name
-  location            = azurerm_resource_group.resource_group.location
-  resource_group_name = azurerm_resource_group.resource_group.name
-  offer_type          = "Standard"
-  kind                = "MongoDB"
-
-  enable_automatic_failover = true
-  mongo_server_version      = "4.0"
-
-  capabilities {
-    name = "EnableAggregationPipeline"
-  }
-
-  capabilities {
-    name = "mongoEnableDocLevelTTL"
-  }
-
-  capabilities {
-    name = "MongoDBv3.4"
-  }
-
-  capabilities {
-    name = "EnableMongo"
-  }
-
-  consistency_policy {
-    consistency_level = "Eventual"
-  }
-
-  geo_location {
-    location          = azurerm_resource_group.resource_group.location
-    failover_priority = 0
+module "delyfood_database" {
+  source                    = "./modules/database"
+  db_name                   = var.db_name
+  name                      = "${var.rg-name}-postgresql"
+  postgresql-admin-login    = var.postgresql-admin-login
+  postgresql-admin-password = var.postgresql-admin-password
+  postgresql-sku-name       = var.postgresql-sku-name
+  postgresql-storage        = var.postgresql-storage
+  postgresql-version        = var.postgresql-version
+  resource_group = {
+    name     = azurerm_resource_group.resource_group.name,
+    location = azurerm_resource_group.resource_group.location,
   }
 }
 
@@ -104,12 +83,11 @@ resource "azurerm_linux_function_app" "fn_app" {
     FUNCTIONS_WORKER_RUNTIME                 = "node"
     WEBSITE_CONTENTAZUREFILECONNECTIONSTRING = "${azurerm_storage_account.fn_storage_account.primary_connection_string}"
     WEBSITE_CONTENTSHARE                     = "${azurerm_storage_account.fn_storage_account.name}"
-    COSMOSDB_CONNECTION_STR                  = azurerm_cosmosdb_account.db.connection_strings[0]
     APPINSIGHTS_INSTRUMENTATIONKEY           = azurerm_application_insights.application_insights.instrumentation_key,
   }
 
   depends_on = [
-    azurerm_cosmosdb_account.db
+    module.delyfood_database
   ]
 }
 

@@ -6,9 +6,33 @@ variable "rg-name" {
   description = "The name of the resource group"
 }
 
-variable "cosmosdb_name" {
-  description = "The name of the cosmos db"
+variable "db_name" {
+  description = "The name of the database"
 }
+
+variable "postgresql-admin-login" {
+  description = "Login to authenticate to PostgreSQL Server"
+}
+
+variable "postgresql-admin-password" {
+  description = "Password to authenticate to PostgreSQL Server"
+}
+
+variable "postgresql-version" {
+  description = "PostgreSQL Server version to deploy"
+  default     = "11"
+}
+
+variable "postgresql-sku-name" {
+  description = "PostgreSQL SKU Name"
+  default     = "B_Gen5_1"
+}
+
+variable "postgresql-storage" {
+  description = "PostgreSQL Storage in MB, from 5120 MB to 4194304 MB"
+  default     = "5120"
+}
+
 
 variable "fn_storage_account_name" {
   description = "The name of the storage account name"
