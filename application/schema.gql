@@ -1,0 +1,149 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Category {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  coverImg: String
+  slug: String!
+  restaurants: [Restaurant!]!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DishChoices {
+  name: String!
+  extra: Float
+}
+
+type DishOptions {
+  name: String!
+  choices: [DishChoices!]
+  extra: Float
+}
+
+type Dish {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  price: Float!
+  photo: String
+  description: String!
+  restaurant: Restaurant!
+  options: [DishOptions!]
+}
+
+type OrderItem {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dish: Dish!
+  options: [DishOptions!]
+  orders: [DishOptions!]
+}
+
+type Order {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  customer: User
+  driver: User
+  restaurant: Restaurant
+  items: [OrderItem!]!
+  total: Float
+  status: OrderStatus!
+}
+
+enum OrderStatus {
+  Pending
+  Cooking
+  Cooked
+  PickedUp
+  Delivered
+}
+
+type Restaurant {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  coverImg: String!
+  address: String!
+  category: Category!
+  owner: User!
+  menu: [Dish!]!
+  orders: [Order!]
+  isPromoted: Boolean!
+  promotedUntil: DateTime!
+}
+
+type Payment {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  transactionId: Int!
+  user: User!
+  restaurant: Restaurant!
+}
+
+type User {
+  id: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  name: String!
+  lastName: String!
+  role: UserRole!
+  restaurants: [Restaurant!]!
+  orders: [Order!]
+  payments: [Payment!]
+  rides: [Order!]
+}
+
+enum UserRole {
+  CLIENT
+  OWNER
+  DELIVERY
+}
+
+type CreateUserOutput {
+  error: String
+  ok: Boolean!
+  item: User
+}
+
+type UserPaginationOutput {
+  error: String
+  ok: Boolean!
+  totalPages: Float
+  totalResults: Float
+  currentPage: Float
+  items: [User!]
+}
+
+type Query {
+  listUsers(input: UserPaginationInput): UserPaginationOutput!
+}
+
+input UserPaginationInput {
+  offset: Int = 0
+  limit: Int = 100
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserOutput!
+}
+
+input CreateUserInput {
+  email: String!
+  name: String!
+  lastName: String!
+  role: UserRole!
+}
