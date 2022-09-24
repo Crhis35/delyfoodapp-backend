@@ -4,7 +4,6 @@ import {
   OneToMany,
   Property,
   Collection,
-  Index,
 } from '@mikro-orm/core';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString, Length } from 'class-validator';
@@ -17,7 +16,6 @@ import { CoreEntity } from '../../common/entities/core.entity';
 @InputType('RestaurantInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
-@Index({ properties: ['name'] })
 export class Restaurant extends CoreEntity {
   @Property()
   @Field(() => String)

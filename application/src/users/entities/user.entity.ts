@@ -1,12 +1,4 @@
-import {
-  Collection,
-  Entity,
-  Enum,
-  Index,
-  OneToMany,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { Collection, Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 import {
   Field,
   InputType,
@@ -32,13 +24,10 @@ registerEnumType(UserRole, {
 @InputType('UserInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
-@Index({ properties: ['name', 'lastName'] })
-@Unique({ properties: ['email'] })
 export class User extends CoreEntity {
   @Field()
-  @Property()
+  @Property({ unique: true })
   @IsEmail()
-  @Unique()
   email: string;
 
   @Field()

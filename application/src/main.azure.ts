@@ -12,7 +12,9 @@ export async function createApp(): Promise<INestApplication> {
   );
 
   await app.get(MikroORM).getSchemaGenerator().ensureDatabase();
-  await app.get(MikroORM).getSchemaGenerator().updateSchema();
+  await app.get(MikroORM).getSchemaGenerator().updateSchema({
+    wrap: false,
+  });
   app.setGlobalPrefix('api');
   app.enableCors();
 

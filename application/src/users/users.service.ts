@@ -43,14 +43,13 @@ export class UsersService {
         newWord.shift();
         return newWord.join('.');
       });
-      console.log(newRelations);
 
       const [users, count] = await this.userRepository.findAndCount(
         {},
         {
           limit,
           offset,
-          populate: true,
+          populate: newRelations as any,
         },
       );
       return {
