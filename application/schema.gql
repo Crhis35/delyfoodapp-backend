@@ -81,7 +81,7 @@ type Restaurant {
   menu: [Dish!]!
   orders: [Order!]
   isPromoted: Boolean!
-  promotedUntil: DateTime!
+  promotedUntil: DateTime
 }
 
 type Payment {
