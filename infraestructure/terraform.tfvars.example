@@ -1,3 +1,5 @@
+postgresql-admin-login         = "delyfoodapp"
+postgresql-admin-password      = "Th1sIsAP@ssw0rd"
 location                       = "eastus"
 rg-name                        = "rg-backend-delyfoodapp"
 db_name                        = "delyfoodapp-postgresql"
@@ -13,3 +15,6 @@ delyfood_messages_reader       = "delyfood-messages-reader"
 delyfood_messages_error_reader = "delyfood-messages-error-reader"
 delyfood_messages_error_writer = "delyfood-messages-error-writer"
 delyfood_signalr               = "delyfood-signalr"
+postgresql-version             = "14"
+postgresql-sku-name            = "B_Standard_B1ms"
+postgresql-storage             = 32768
